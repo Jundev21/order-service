@@ -17,7 +17,7 @@ public class OrderController {
         this.createOrderUseCase = createOrderUseCase;
     }
 
-    @PostMapping("/order")
+    @PostMapping("/orders")
     public ResponseEntity<CreateOrderResponse> createNewOrder(
             @Valid @RequestBody CreateOrderRequest createOrderRequest
     ) {

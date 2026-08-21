@@ -1,4 +1,33 @@
 package com.example.order.order_service.adapter.out.persistence;
 
+import com.example.order.order_service.domain.model.OrderStatus;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name="orders")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Long goodsId;
+
+    private int quantity;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
+    public OrderEntity(Long id, Long goodsId, int quantity, OrderStatus orderStatus){
+        this.id = id;
+        this.goodsId = goodsId;
+        this.quantity = quantity;
+        this.orderStatus = orderStatus;
+
+    }
 }

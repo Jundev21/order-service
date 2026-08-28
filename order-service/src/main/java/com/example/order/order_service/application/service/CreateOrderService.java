@@ -6,6 +6,7 @@ import com.example.order.order_service.application.port.out.SaveOrderPort;
 import com.example.order.order_service.domain.model.Order;
 import com.example.order.order_service.event.OrderCreatedEvent;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service

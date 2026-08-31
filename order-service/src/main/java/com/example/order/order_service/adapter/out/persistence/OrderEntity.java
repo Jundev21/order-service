@@ -3,7 +3,6 @@ package com.example.order.order_service.adapter.out.persistence;
 import com.example.order.order_service.domain.model.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,5 +28,9 @@ public class OrderEntity {
         this.quantity = quantity;
         this.orderStatus = orderStatus;
 
+    }
+
+    public void ChangeOrderStatus(OrderStatus orderStatus){
+        this.orderStatus = orderStatus;
     }
 }

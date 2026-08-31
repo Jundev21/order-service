@@ -3,44 +3,38 @@ package com.example.order.order_service.adapter.in.kafka;
 import com.example.order.order_service.application.port.in.ConsumerProductEventPort;
 import com.example.order.order_service.event.InventoryDecreaseFailedEvent;
 import com.example.order.order_service.event.InventoryDecreasedEvent;
-import com.example.order.order_service.event.OrderCreatedEvent;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
-public class ProductEventConsumer {
+@RequiredArgsConstructor
+public class InventoryEventConsumer {
 
     private final ConsumerProductEventPort consumerProductEventPort;
-
     private static final String DECREASED_TOPIC = "inventory-decreased";
     private static final String DECREASE_FAILED_TOPIC = "inventory-decrease-failed";
-    private final String GROUPID = "order-service";
-
-    private final KafkaTemplate<String, OrderCreatedEvent> kafkaTemplate;
+    private static final String GROUP_ID = "order-service";
 
 
     @KafkaListener(
             topics = DECREASED_TOPIC,
-            groupId = GROUPID
+            groupId = GROUP_ID
     )
-    public void inventoryDecreased(InventoryDecreasedEvent inventoryDecreasedEvent) {
-
-        consumerProductEventPort.inventoryDecreased(inventoryDecreasedEvent);
-
+    public void inventoryDecreased(
+            InventoryDecreasedEvent event
+    ) {
+        consumerProductEventPort.inventoryDecreased(event);
     }
 
 
     @KafkaListener(
             topics = DECREASE_FAILED_TOPIC,
-            groupId = GROUPID
+            groupId = GROUP_ID
     )
-    public void inventoryFailedDecreased(InventoryDecreaseFailedEvent inventoryDecreaseFailedEvent) {
-
-        consumerProductEventPort.inventoryFailedDecreased(inventoryDecreaseFailedEvent);
-
+    public void inventoryDecreaseFailed(
+            InventoryDecreaseFailedEvent event
+    ) {
+        consumerProductEventPort.inventoryFailedDecreased(event);
     }
-
 }

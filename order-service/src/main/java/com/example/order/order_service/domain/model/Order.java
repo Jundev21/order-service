@@ -8,22 +8,25 @@ import lombok.Getter;
 public class Order {
 
     private final Long id;
+    private final String idempotencyKey;
     private final Long goodsId;
     private final int quantity;
     private OrderStatus orderStatus;
 
 
-    public Order(Long id, Long goodsId, int quantity, OrderStatus orderStatus) {
+    public Order(Long id, String idempotencyKey, Long goodsId, int quantity, OrderStatus orderStatus) {
         this.id = id;
+        this.idempotencyKey = idempotencyKey;
         this.goodsId = goodsId;
         this.quantity = quantity;
         this.orderStatus = orderStatus;
     }
 
 
-    public static Order create(Long goodsId, int quantity){
+    public static Order create(String idempotencyKey, Long goodsId, int quantity) {
         return new Order(
                 null,
+                idempotencyKey,
                 goodsId,
                 quantity,
                 OrderStatus.CREATED
@@ -31,11 +34,11 @@ public class Order {
 
     }
 
-    public void cancle(){
+    public void cancle() {
         this.orderStatus = OrderStatus.CANCELED;
     }
 
-    public void complete(Long goodsId, int quantity){
+    public void complete(Long goodsId, int quantity) {
         this.orderStatus = OrderStatus.COMPLETED;
     }
 

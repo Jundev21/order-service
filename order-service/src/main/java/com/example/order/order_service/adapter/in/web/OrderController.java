@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -19,9 +20,11 @@ public class OrderController {
 
     @PostMapping("/orders")
     public ResponseEntity<CreateOrderResponse> createNewOrder(
+            @RequestHeader("Idempotency-key") String idempotencyKey,
             @Valid @RequestBody CreateOrderRequest createOrderRequest
     ) {
         Order order = createOrderUseCase.createOrder(
+                idempotencyKey,
                 createOrderRequest.goodsId(),
                 createOrderRequest.quantity()
         );

@@ -6,5 +6,5 @@ import com.example.order.order_service.domain.model.Order;
 //흐름 제어
 
 public interface CreateOrderUseCase {
-    Order createOrder(Long goodsId, int quantity);
+    Order createOrder(String idempotencyKey, Long goodsId, int quantity);
 }

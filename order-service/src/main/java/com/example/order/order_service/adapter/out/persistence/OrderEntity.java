@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="orders")
+@Table(name = "orders")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderEntity {
@@ -17,20 +17,23 @@ public class OrderEntity {
 
     private Long goodsId;
 
+    @Column(unique = true)
+    private String idempotencyKey;
+
     private int quantity;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    public OrderEntity(Long id, Long goodsId, int quantity, OrderStatus orderStatus){
+    public OrderEntity(Long id, String idempotencyKey, Long goodsId, int quantity, OrderStatus orderStatus) {
         this.id = id;
+        this.idempotencyKey = idempotencyKey;
         this.goodsId = goodsId;
         this.quantity = quantity;
         this.orderStatus = orderStatus;
-
     }
 
-    public void ChangeOrderStatus(OrderStatus orderStatus){
+    public void ChangeOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 }

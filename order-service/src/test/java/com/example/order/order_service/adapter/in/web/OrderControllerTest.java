@@ -10,11 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,13 +42,14 @@ class OrderControllerTest {
 
         Order order = new Order(
                 1L,
+                "test-key",
                 1L,
                 2,
                 OrderStatus.CREATED
         );
 
         when(
-                createOrderUseCase.createOrder(1L, 2)
+                createOrderUseCase.createOrder("test-key", 1L, 2)
         ).thenReturn(order);
 
         mockMvc.perform(
@@ -67,8 +66,7 @@ class OrderControllerTest {
                 .andExpect(jsonPath("$.orderId").value(1));
 
 
-
         verify(createOrderUseCase)
-                .createOrder(1L, 2);
+                .createOrder("test-key", 1L, 2);
     }
 }

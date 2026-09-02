@@ -18,10 +18,17 @@ public class OrderEventPublisher implements PublishOrderEventPort {
 
     @Override
     public void publishOrder(OrderCreatedEvent orderEvent) {
-        kafkaTemplate.send(
-                TOPIC,
-                orderEvent.orderId().toString(),
-                orderEvent
-        );
+        try {
+            kafkaTemplate.send(
+                    TOPIC,
+                    orderEvent.orderId().toString(),
+                    orderEvent
+            ).get();
+
+        } catch (Exception e) {
+            throw new IllegalStateException(
+                    "Kafka 이벤트 발행 실패", e
+            );
+        }
     }
 }

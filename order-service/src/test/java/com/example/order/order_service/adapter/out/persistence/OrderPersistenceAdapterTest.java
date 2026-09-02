@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class OrderPersistenceAdapterTest {
@@ -29,7 +28,7 @@ class OrderPersistenceAdapterTest {
     @DisplayName("주문생성 저장")
     void save() {
         // given
-        Order order = Order.create(1L, 2);
+        Order order = Order.create("test-key", 1L, 2);
 
         // when
         Order savedOrder =

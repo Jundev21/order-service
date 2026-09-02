@@ -11,7 +11,7 @@ class OrderTest {
     @Test
     @DisplayName("주문생성")
     void create() {
-        Order order = Order.create(1L, 2);
+        Order order = Order.create("test-key",1L, 2);
         assertThat(order.getGoodsId()).isEqualTo(1L);
         assertThat(order.getQuantity()).isEqualTo(2);
         assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.CREATED);

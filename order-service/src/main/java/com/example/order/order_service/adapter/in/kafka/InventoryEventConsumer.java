@@ -1,6 +1,6 @@
 package com.example.order.order_service.adapter.in.kafka;
 
-import com.example.order.order_service.application.port.in.ConsumerProductEventPort;
+import com.example.order.order_service.application.port.in.ConsumerProductEventUseCase;
 import com.example.order.order_service.event.InventoryDecreaseFailedEvent;
 import com.example.order.order_service.event.InventoryDecreasedEvent;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class InventoryEventConsumer {
 
-    private final ConsumerProductEventPort consumerProductEventPort;
+    private final ConsumerProductEventUseCase consumerProductEventUseCase;
     private static final String DECREASED_TOPIC = "inventory-decreased";
     private static final String DECREASE_FAILED_TOPIC = "inventory-decrease-failed";
     private static final String GROUP_ID = "order-service";
@@ -24,7 +24,7 @@ public class InventoryEventConsumer {
     public void inventoryDecreased(
             InventoryDecreasedEvent event
     ) {
-        consumerProductEventPort.inventoryDecreased(event);
+        consumerProductEventUseCase.inventoryDecreased(event);
     }
 
 
@@ -35,6 +35,6 @@ public class InventoryEventConsumer {
     public void inventoryDecreaseFailed(
             InventoryDecreaseFailedEvent event
     ) {
-        consumerProductEventPort.inventoryFailedDecreased(event);
+        consumerProductEventUseCase.inventoryFailedDecreased(event);
     }
 }

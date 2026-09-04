@@ -1,6 +1,6 @@
 package com.example.order.order_service.application.service;
 
-import com.example.order.order_service.application.port.in.ConsumerProductEventPort;
+import com.example.order.order_service.application.port.in.ConsumerProductEventUseCase;
 import com.example.order.order_service.application.port.out.InventoryConsumerEventPort;
 import com.example.order.order_service.domain.model.OrderStatus;
 import com.example.order.order_service.event.InventoryDecreaseFailedEvent;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class ConsumerProductEventService implements ConsumerProductEventPort {
+public class ConsumerProductEventService implements ConsumerProductEventUseCase {
 
     private final InventoryConsumerEventPort inventoryConsumerEventPort;
 

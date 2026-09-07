@@ -4,4 +4,5 @@ import com.example.order.order_service.event.OrderCreatedEvent;
 
 public interface PublishOrderEventPort {
     void publishOrder(OrderCreatedEvent orderEvent);
+    void publishPaymentOrder(OrderCreatedEvent orderEvent);
 }

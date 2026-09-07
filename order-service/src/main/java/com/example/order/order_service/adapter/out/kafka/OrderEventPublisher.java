@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderEventPublisher implements PublishOrderEventPort {
 
-    private static String TOPIC = "order-created";
+    private final static String TOPIC = "order-created";
+    private final static String PAYMENT_TOPIC = "order-payment";
     private final KafkaTemplate<String, OrderCreatedEvent> kafkaTemplate;
 
     public OrderEventPublisher(KafkaTemplate<String, OrderCreatedEvent> kafkaTemplate) {
@@ -30,5 +31,22 @@ public class OrderEventPublisher implements PublishOrderEventPort {
                     "Kafka 이벤트 발행 실패", e
             );
         }
+    }
+
+    @Override
+    public void publishPaymentOrder(OrderCreatedEvent orderEvent) {
+        try {
+            kafkaTemplate.send(
+                    PAYMENT_TOPIC,
+                    orderEvent.orderId().toString(),
+                    orderEvent
+            ).get();
+
+        } catch (Exception e) {
+            throw new IllegalStateException(
+                    "Kafka 이벤트 발행 실패", e
+            );
+        }
+
     }
 }

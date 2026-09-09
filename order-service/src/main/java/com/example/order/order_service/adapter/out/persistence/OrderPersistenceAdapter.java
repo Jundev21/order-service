@@ -22,7 +22,8 @@ public class OrderPersistenceAdapter implements SaveOrderPort, LoadOrderPort {
                 order.getIdempotencyKey(),
                 order.getGoodsId(),
                 order.getQuantity(),
-                order.getOrderStatus()
+                order.getOrderStatus(),
+                order.getProductPrice()
         );
 
         OrderEntity saveOrderEntity = orderRepository.save(orderEntity);
@@ -30,6 +31,7 @@ public class OrderPersistenceAdapter implements SaveOrderPort, LoadOrderPort {
         return new Order(
                 saveOrderEntity.getId(),
                 order.getIdempotencyKey(),
+                saveOrderEntity.getUnitPrice(),
                 saveOrderEntity.getGoodsId(),
                 saveOrderEntity.getQuantity(),
                 saveOrderEntity.getOrderStatus()
@@ -44,10 +46,27 @@ public class OrderPersistenceAdapter implements SaveOrderPort, LoadOrderPort {
                         new Order(
                                 orderEntity.getId(),
                                 orderEntity.getIdempotencyKey(),
+                                orderEntity.getUnitPrice(),
                                 orderEntity.getGoodsId(),
                                 orderEntity.getQuantity(),
                                 orderEntity.getOrderStatus()
                         )
                 );
+    }
+
+    @Override
+    public Order findById(Long orderId) {
+        OrderEntity orderInfo = orderRepository.findById(orderId).orElseThrow(
+                () -> new IllegalArgumentException("주문정보가 없습니다.")
+        );
+
+        return new Order(
+                orderInfo.getId(),
+                orderInfo.getIdempotencyKey(),
+                orderInfo.getUnitPrice(),
+                orderInfo.getGoodsId(),
+                orderInfo.getQuantity(),
+                orderInfo.getOrderStatus()
+        );
     }
 }

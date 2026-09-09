@@ -2,8 +2,10 @@ package com.example.order.order_service.application.service;
 
 import com.example.order.order_service.application.port.in.CreateOrderUseCase;
 import com.example.order.order_service.application.port.out.LoadOrderPort;
+import com.example.order.order_service.application.port.out.LoadProductPort;
 import com.example.order.order_service.application.port.out.OutboxEventPort;
 import com.example.order.order_service.application.port.out.SaveOrderPort;
+import com.example.order.order_service.application.port.out.dto.ProductInfo;
 import com.example.order.order_service.domain.model.Order;
 import com.example.order.order_service.event.OrderCreatedEvent;
 import jakarta.transaction.Transactional;
@@ -19,6 +21,7 @@ import java.util.UUID;
 public class CreateOrderService implements CreateOrderUseCase {
     private final SaveOrderPort saveOrderPort;
     private final LoadOrderPort loadOrderPort;
+    private final LoadProductPort loadProductPort;
     private final OutboxEventPort outboxEventPort;
     private final ObjectMapper objectMapper;
 
@@ -30,7 +33,11 @@ public class CreateOrderService implements CreateOrderUseCase {
 
         if (existingOrder.isPresent()) return existingOrder.get();
 
-        Order order = Order.create(idempotencyKey, goodsId, quantity);
+        ProductInfo product = loadProductPort.getProductInfo(goodsId);
+
+        Long totalPrice = product.price() * quantity;
+
+        Order order = Order.create(idempotencyKey, goodsId, quantity, product.price());
         Order savedOrder = saveOrderPort.save(order);
         String eventId = UUID.randomUUID().toString();
 

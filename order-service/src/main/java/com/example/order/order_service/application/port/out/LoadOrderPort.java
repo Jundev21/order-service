@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface LoadOrderPort {
     Optional<Order> findByIdempotencyKey(String idempotencyKey);
+    Order findById(Long orderId);
 }

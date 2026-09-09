@@ -15,22 +15,27 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long goodsId;
-
-    @Column(unique = true)
     private String idempotencyKey;
 
+    private Long goodsId;
+
+    private Long unitPrice;
+
     private int quantity;
+
+    private Long totalAmount;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    public OrderEntity(Long id, String idempotencyKey, Long goodsId, int quantity, OrderStatus orderStatus) {
+    public OrderEntity(Long id, String idempotencyKey, Long goodsId, int quantity, OrderStatus orderStatus,Long unitPrice) {
         this.id = id;
         this.idempotencyKey = idempotencyKey;
         this.goodsId = goodsId;
         this.quantity = quantity;
         this.orderStatus = orderStatus;
+        this.totalAmount = quantity * unitPrice;
+        this.unitPrice = unitPrice;
     }
 
     public void ChangeOrderStatus(OrderStatus orderStatus) {

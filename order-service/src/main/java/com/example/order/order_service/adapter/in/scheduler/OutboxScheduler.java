@@ -15,4 +15,12 @@ public class OutboxScheduler {
     public void publishOutboxEvents() {
         outboxPublishService.publishPendingEvents();
     }
+
+
+    @Scheduled(fixedDelay = 1000)
+    public void publishPaymentEvents() {
+        outboxPublishService.publishPaymentEvents();
+    }
+
+
 }

@@ -15,6 +15,13 @@ public class RestClientConfig {
 
         return RestClient.builder()
                 .baseUrl(productServiceUrl)
+                .requestInterceptor((request, body, execution) -> {
+
+                    System.out.println("요청 URL = " + request.getURI());
+                    System.out.println("요청 Method = " + request.getMethod());
+
+                    return execution.execute(request, body);
+                })
                 .build();
     }
 }

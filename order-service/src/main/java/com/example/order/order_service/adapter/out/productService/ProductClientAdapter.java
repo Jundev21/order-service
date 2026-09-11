@@ -19,7 +19,7 @@ public class ProductClientAdapter implements LoadProductPort {
     public ProductInfo getProductInfo(Long goodsId) {
         ProductResponse response = restClient
                 .get()
-                .uri("/product/{goodsId}", goodsId)
+                .uri("/products/{goodsId}", goodsId)
                 .retrieve()
                 .body(ProductResponse.class);
 

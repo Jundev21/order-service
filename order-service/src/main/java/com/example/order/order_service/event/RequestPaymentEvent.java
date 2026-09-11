@@ -5,6 +5,7 @@ import com.example.order.order_service.domain.model.Order;
 public record RequestPaymentEvent(
         String eventId,
         Long orderId,
+        Long goodsId,
         Long amount
 ) {
     public static RequestPaymentEvent from(
@@ -13,6 +14,7 @@ public record RequestPaymentEvent(
         return new RequestPaymentEvent(
                 eventId,
                 order.getId(),
+                order.getGoodsId(),
                 amount
         );
     }

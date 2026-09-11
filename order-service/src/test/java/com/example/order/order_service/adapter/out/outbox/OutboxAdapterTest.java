@@ -1,5 +1,8 @@
 package com.example.order.order_service.adapter.out.outbox;
 
+import com.example.order.order_service.adapter.out.outbox.product.OutBoxRepository;
+import com.example.order.order_service.adapter.out.outbox.product.OutboxAdapter;
+import com.example.order.order_service.adapter.out.outbox.product.OutboxEventEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

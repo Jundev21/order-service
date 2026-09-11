@@ -1,5 +1,6 @@
-package com.example.order.order_service.adapter.out.outbox;
+package com.example.order.order_service.adapter.out.outbox.product;
 
+import com.example.order.order_service.adapter.out.outbox.OutboxStatus;
 import com.example.order.order_service.application.port.out.OutboxEventPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

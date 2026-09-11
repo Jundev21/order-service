@@ -1,11 +1,10 @@
-package com.example.order.order_service.adapter.out.outbox;
+package com.example.order.order_service.adapter.out.outbox.product;
 
-import org.jspecify.annotations.NonNull;
+import com.example.order.order_service.adapter.out.outbox.OutboxStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface OutBoxRepository extends JpaRepository<OutboxEventEntity,Long> {

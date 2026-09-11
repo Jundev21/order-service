@@ -1,6 +1,6 @@
 package com.example.order.order_service.application.service;
 
-import com.example.order.order_service.adapter.out.outbox.OutboxEventEntity;
+import com.example.order.order_service.adapter.out.outbox.product.OutboxEventEntity;
 import com.example.order.order_service.application.port.out.OutboxEventPort;
 import com.example.order.order_service.application.port.out.PublishOrderEventPort;
 import com.example.order.order_service.domain.model.OrderStatus;

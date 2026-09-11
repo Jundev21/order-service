@@ -1,5 +1,6 @@
-package com.example.order.order_service.adapter.out.outbox;
+package com.example.order.order_service.adapter.out.outbox.product;
 
+import com.example.order.order_service.adapter.out.outbox.OutboxStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

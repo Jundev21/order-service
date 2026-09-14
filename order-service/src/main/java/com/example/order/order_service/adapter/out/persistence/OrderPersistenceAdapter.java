@@ -31,8 +31,8 @@ public class OrderPersistenceAdapter implements SaveOrderPort, LoadOrderPort {
         return new Order(
                 saveOrderEntity.getId(),
                 order.getIdempotencyKey(),
-                saveOrderEntity.getUnitPrice(),
                 saveOrderEntity.getGoodsId(),
+                saveOrderEntity.getUnitPrice(),
                 saveOrderEntity.getQuantity(),
                 saveOrderEntity.getOrderStatus()
         );
@@ -46,8 +46,8 @@ public class OrderPersistenceAdapter implements SaveOrderPort, LoadOrderPort {
                         new Order(
                                 orderEntity.getId(),
                                 orderEntity.getIdempotencyKey(),
-                                orderEntity.getUnitPrice(),
                                 orderEntity.getGoodsId(),
+                                orderEntity.getUnitPrice(),
                                 orderEntity.getQuantity(),
                                 orderEntity.getOrderStatus()
                         )
@@ -63,8 +63,8 @@ public class OrderPersistenceAdapter implements SaveOrderPort, LoadOrderPort {
         return new Order(
                 orderInfo.getId(),
                 orderInfo.getIdempotencyKey(),
-                orderInfo.getUnitPrice(),
                 orderInfo.getGoodsId(),
+                orderInfo.getUnitPrice(),
                 orderInfo.getQuantity(),
                 orderInfo.getOrderStatus()
         );

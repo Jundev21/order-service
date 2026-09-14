@@ -6,6 +6,7 @@ import com.example.order.order_service.application.port.out.PaymentOutboxEventPo
 import com.example.order.order_service.application.port.out.PublishOrderEventPort;
 import com.example.order.order_service.application.port.out.OutboxEventPort;
 import com.example.order.order_service.event.OrderCreatedEvent;
+import com.example.order.order_service.event.RequestPaymentEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
@@ -40,9 +41,9 @@ public class OutboxPublishService {
         List<PaymentOutboxEventEntity> events = paymentOutboxEventPort.findPendingEvents();
 
         for (PaymentOutboxEventEntity outboxEvent : events) {
-            OrderCreatedEvent event = objectMapper.readValue(
+            RequestPaymentEvent event = objectMapper.readValue(
                     outboxEvent.getPayload(),
-                    OrderCreatedEvent.class
+                    RequestPaymentEvent.class
             );
             publishOrderEventPort.publishPaymentOrder(event);
             paymentOutboxEventPort.markAsSent(outboxEvent.getId());

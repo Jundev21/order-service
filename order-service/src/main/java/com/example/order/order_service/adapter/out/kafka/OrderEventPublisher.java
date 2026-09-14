@@ -2,6 +2,7 @@ package com.example.order.order_service.adapter.out.kafka;
 
 import com.example.order.order_service.application.port.out.PublishOrderEventPort;
 import com.example.order.order_service.event.OrderCreatedEvent;
+import com.example.order.order_service.event.RequestPaymentEvent;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -12,9 +13,11 @@ public class OrderEventPublisher implements PublishOrderEventPort {
     private final static String TOPIC = "order-created";
     private final static String PAYMENT_TOPIC = "order-payment";
     private final KafkaTemplate<String, OrderCreatedEvent> kafkaTemplate;
+    private final KafkaTemplate<String, RequestPaymentEvent> kafkaPaymentTemplate;
 
-    public OrderEventPublisher(KafkaTemplate<String, OrderCreatedEvent> kafkaTemplate) {
+    public OrderEventPublisher(KafkaTemplate<String, OrderCreatedEvent> kafkaTemplate, KafkaTemplate<String, RequestPaymentEvent> kafkaPaymentTemplate) {
         this.kafkaTemplate = kafkaTemplate;
+        this.kafkaPaymentTemplate = kafkaPaymentTemplate;
     }
 
     @Override
@@ -34,12 +37,12 @@ public class OrderEventPublisher implements PublishOrderEventPort {
     }
 
     @Override
-    public void publishPaymentOrder(OrderCreatedEvent orderEvent) {
+    public void publishPaymentOrder(RequestPaymentEvent paymentEvent) {
         try {
-            kafkaTemplate.send(
+            kafkaPaymentTemplate.send(
                     PAYMENT_TOPIC,
-                    orderEvent.orderId().toString(),
-                    orderEvent
+                    paymentEvent.orderId().toString(),
+                    paymentEvent
             ).get();
 
         } catch (Exception e) {

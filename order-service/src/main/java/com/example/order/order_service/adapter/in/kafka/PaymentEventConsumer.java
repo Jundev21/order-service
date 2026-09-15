@@ -1,8 +1,7 @@
 package com.example.order.order_service.adapter.in.kafka;
 
-import com.example.order.order_service.application.port.in.ConsumerProductEventUseCase;
-import com.example.order.order_service.event.InventoryDecreaseFailedEvent;
-import com.example.order.order_service.event.InventoryDecreasedEvent;
+import com.example.order.order_service.application.port.in.ConsumerPaymentEventUseCase;
+import com.example.order.order_service.event.PaymentSucceededEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PaymentEventConsumer {
 
-    private final ConsumerProductEventUseCase consumerProductEventUseCase;
+    private final ConsumerPaymentEventUseCase consumerPaymentEventUseCase;
     private static final String PAYMENT_TOPIC = "success-payment";
     private static final String GROUP_ID = "order-service";
 
@@ -21,7 +20,8 @@ public class PaymentEventConsumer {
             groupId = GROUP_ID
     )
     public void successPayment(
-            InventoryDecreasedEvent event
+            PaymentSucceededEvent paymentSucceededEvent
     ) {
+        consumerPaymentEventUseCase.successPayment(paymentSucceededEvent);
     }
 }

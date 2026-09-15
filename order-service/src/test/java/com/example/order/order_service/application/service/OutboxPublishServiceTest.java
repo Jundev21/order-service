@@ -1,6 +1,6 @@
 package com.example.order.order_service.application.service;
 
-import com.example.order.order_service.adapter.out.outbox.product.OutboxEventEntity;
+import com.example.order.order_service.adapter.out.outbox.product.OrderOutboxEventEntity;
 import com.example.order.order_service.application.port.out.OutboxEventPort;
 import com.example.order.order_service.application.port.out.PublishOrderEventPort;
 import com.example.order.order_service.domain.model.OrderStatus;
@@ -39,8 +39,8 @@ class OutboxPublishServiceTest {
     @DisplayName("Kafka 발행에 성공하면 Outbox를 SENT로 변경한다")
     void KafkaSendingSuccess_OutboxChangeToSent() {
 
-        OutboxEventEntity outboxEvent =
-                new OutboxEventEntity(
+        OrderOutboxEventEntity outboxEvent =
+                new OrderOutboxEventEntity(
                         "event-123",
                         "ORDER_CREATED",
                         "{\"orderId\":1}"
@@ -69,8 +69,8 @@ class OutboxPublishServiceTest {
     void FailedKafkaSending_OutboxNotChange() {
 
         // given
-        OutboxEventEntity outboxEvent =
-                new OutboxEventEntity(
+        OrderOutboxEventEntity outboxEvent =
+                new OrderOutboxEventEntity(
                         "event-123",
                         "ORDER_CREATED",
                         "{\"orderId\":1}"

@@ -44,4 +44,9 @@ public class PaymentOutboxEventEntity {
     public void updateStatus(OutboxStatus status) {
         this.status = status;
     }
+
+    public void markAsSent() {
+        status = OutboxStatus.SENT;
+    }
+
 }

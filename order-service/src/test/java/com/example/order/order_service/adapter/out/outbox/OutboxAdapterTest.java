@@ -1,8 +1,8 @@
 package com.example.order.order_service.adapter.out.outbox;
 
-import com.example.order.order_service.adapter.out.outbox.product.OutBoxRepository;
-import com.example.order.order_service.adapter.out.outbox.product.OutboxAdapter;
-import com.example.order.order_service.adapter.out.outbox.product.OutboxEventEntity;
+import com.example.order.order_service.adapter.out.outbox.product.OrderOutBoxRepository;
+import com.example.order.order_service.adapter.out.outbox.product.OrderOutboxAdapter;
+import com.example.order.order_service.adapter.out.outbox.product.OrderOutboxEventEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,10 +21,10 @@ import static org.mockito.Mockito.verify;
 class OutboxAdapterTest {
 
     @Mock
-    private OutBoxRepository outBoxRepository;
+    private OrderOutBoxRepository outBoxRepository;
 
     @InjectMocks
-    private OutboxAdapter outboxAdapter;
+    private OrderOutboxAdapter outboxAdapter;
 
     @Test
     @DisplayName("Outbox 상태를 SENT로 변경한다")
@@ -32,8 +32,8 @@ class OutboxAdapterTest {
 
         Long outboxId = 1L;
 
-        OutboxEventEntity outboxEvent =
-                new OutboxEventEntity(
+        OrderOutboxEventEntity outboxEvent =
+                new OrderOutboxEventEntity(
                         "event-123",
                         "ORDER_CREATED",
                         "{\"orderId\":1}"
@@ -49,15 +49,15 @@ class OutboxAdapterTest {
     @DisplayName("PENDING_이벤트를_조회한다")
     void findPendingEvents() {
 
-        OutboxEventEntity event =
-                new OutboxEventEntity(
+        OrderOutboxEventEntity event =
+                new OrderOutboxEventEntity(
                         "event-123",
                         "ORDER_CREATED",
                         "{}"
                 );
 
         given(outBoxRepository.findAllByStatus(OutboxStatus.PENDING)).willReturn(List.of(event));
-        List<OutboxEventEntity> result = outboxAdapter.findPendingEvents();
+        List<OrderOutboxEventEntity> result = outboxAdapter.findPendingEvents();
         assertEquals(1, result.size());
         verify(outBoxRepository).findAllByStatus(OutboxStatus.PENDING);
     }

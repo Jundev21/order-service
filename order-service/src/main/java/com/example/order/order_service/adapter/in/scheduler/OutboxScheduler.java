@@ -12,9 +12,12 @@ public class OutboxScheduler {
     private final OutboxPublishService outboxPublishService;
 
     @Scheduled(fixedDelay = 1000)
-    public void publishOutboxEvents() {
-        outboxPublishService.publishPendingEvents();
-        outboxPublishService.publishPaymentEvents();
+    public void publishOrderCreatedEvents() {
+        outboxPublishService.publishOrderCreatedEvents();
+    }
 
+    @Scheduled(fixedDelay = 1000)
+    public void publishPaymentRequestedEvents() {
+        outboxPublishService.publishPaymentRequestedEvents();
     }
 }

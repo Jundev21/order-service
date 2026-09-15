@@ -1,6 +1,5 @@
 package com.example.order.order_service.adapter.out.outbox.payment;
 
-import com.example.order.order_service.adapter.out.outbox.product.OutboxEventEntity;
 import com.example.order.order_service.adapter.out.outbox.OutboxStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

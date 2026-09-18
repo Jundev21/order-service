@@ -20,4 +20,9 @@ public class OutboxScheduler {
     public void publishPaymentRequestedEvents() {
         outboxPublishService.publishPaymentRequestedEvents();
     }
+
+    @Scheduled(fixedDelay = 1000)
+    public void publishProductInventoryEvents() {
+        outboxPublishService.publishProductInventoryEvents();
+    }
 }

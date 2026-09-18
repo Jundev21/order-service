@@ -2,54 +2,47 @@ package com.example.order.order_service.adapter.out.kafka;
 
 import com.example.order.order_service.application.port.out.PublishOrderEventPort;
 import com.example.order.order_service.event.OrderCreatedEvent;
+import com.example.order.order_service.event.PaymentFailedEvent;
 import com.example.order.order_service.event.RequestPaymentEvent;
+import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-// 주문생성이 완료되면 카프카 서버로 데이터 전송한다.
+import java.util.concurrent.ExecutionException;
+
 @Component
+@RequiredArgsConstructor
 public class OrderEventPublisher implements PublishOrderEventPort {
 
-    private final static String TOPIC = "order-created";
-    private final static String PAYMENT_TOPIC = "order-payment";
-    private final KafkaTemplate<String, OrderCreatedEvent> kafkaTemplate;
-    private final KafkaTemplate<String, RequestPaymentEvent> kafkaPaymentTemplate;
+    private static final String TOPIC = "order-created";
+    private static final String PAYMENT_TOPIC = "order-payment";
+    private static final String INCREASE_INVENTORY_TOPIC = "increase-inventory";
 
-    public OrderEventPublisher(KafkaTemplate<String, OrderCreatedEvent> kafkaTemplate, KafkaTemplate<String, RequestPaymentEvent> kafkaPaymentTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-        this.kafkaPaymentTemplate = kafkaPaymentTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+
+    @Override
+    public void publishOrder(OrderCreatedEvent event) {
+        send(TOPIC, event.orderId().toString(), event);
     }
 
     @Override
-    public void publishOrder(OrderCreatedEvent orderEvent) {
-        try {
-            kafkaTemplate.send(
-                    TOPIC,
-                    orderEvent.orderId().toString(),
-                    orderEvent
-            ).get();
-
-        } catch (Exception e) {
-            throw new IllegalStateException(
-                    "Kafka 이벤트 발행 실패", e
-            );
-        }
+    public void publishPaymentOrder(RequestPaymentEvent event) {
+        send(PAYMENT_TOPIC, event.orderId().toString(), event);
     }
 
     @Override
-    public void publishPaymentOrder(RequestPaymentEvent paymentEvent) {
+    public void increaseInventory(PaymentFailedEvent event) {
+        send(INCREASE_INVENTORY_TOPIC, event.orderId().toString(), event);
+    }
+
+    private void send(String topic, String key, Object event) {
         try {
-            kafkaPaymentTemplate.send(
-                    PAYMENT_TOPIC,
-                    paymentEvent.orderId().toString(),
-                    paymentEvent
-            ).get();
-
-        } catch (Exception e) {
-            throw new IllegalStateException(
-                    "Kafka 이벤트 발행 실패", e
-            );
+            kafkaTemplate.send(topic, key, event).get();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Kafka 이벤트 발행 중 인터럽트 발생", e);
+        } catch (ExecutionException e) {
+            throw new IllegalStateException("Kafka 이벤트 발행 실패. topic=" + topic, e);
         }
-
     }
 }

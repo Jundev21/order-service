@@ -1,7 +1,7 @@
 package com.example.order.order_service.application.service;
 
-import com.example.order.order_service.adapter.out.outbox.product.OrderOutboxEventEntity;
-import com.example.order.order_service.application.port.out.OutboxEventPort;
+import com.example.order.order_service.adapter.out.outbox.product.ProductOutboxEventEntity;
+import com.example.order.order_service.application.port.out.ProductOutboxEventPort;
 import com.example.order.order_service.application.port.out.PublishOrderEventPort;
 import com.example.order.order_service.domain.model.OrderStatus;
 import com.example.order.order_service.event.OrderCreatedEvent;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 class OutboxPublishServiceTest {
 
     @Mock
-    private OutboxEventPort outboxEventPort;
+    private ProductOutboxEventPort productOutboxEventPort;
 
     @Mock
     private PublishOrderEventPort publishOrderEventPort;
@@ -39,8 +39,8 @@ class OutboxPublishServiceTest {
     @DisplayName("Kafka 발행에 성공하면 Outbox를 SENT로 변경한다")
     void KafkaSendingSuccess_OutboxChangeToSent() {
 
-        OrderOutboxEventEntity outboxEvent =
-                new OrderOutboxEventEntity(
+        ProductOutboxEventEntity outboxEvent =
+                new ProductOutboxEventEntity(
                         "event-123",
                         "ORDER_CREATED",
                         "{\"orderId\":1}"
@@ -55,13 +55,13 @@ class OutboxPublishServiceTest {
                         OrderStatus.CREATED
                 );
 
-        given(outboxEventPort.findPendingEvents()).willReturn(List.of(outboxEvent));
+        given(productOutboxEventPort.findPendingEvents()).willReturn(List.of(outboxEvent));
         given(objectMapper.readValue(outboxEvent.getPayload(), OrderCreatedEvent.class)).willReturn(event);
 
         outboxPublishService.publishPendingEvents();
 
         verify(publishOrderEventPort, times(1)).publishOrder(event);
-        verify(outboxEventPort, times(1)).markAsSent(outboxEvent.getId());
+        verify(productOutboxEventPort, times(1)).markAsSent(outboxEvent.getId());
     }
 
     @Test
@@ -69,8 +69,8 @@ class OutboxPublishServiceTest {
     void FailedKafkaSending_OutboxNotChange() {
 
         // given
-        OrderOutboxEventEntity outboxEvent =
-                new OrderOutboxEventEntity(
+        ProductOutboxEventEntity outboxEvent =
+                new ProductOutboxEventEntity(
                         "event-123",
                         "ORDER_CREATED",
                         "{\"orderId\":1}"
@@ -86,11 +86,11 @@ class OutboxPublishServiceTest {
 
                 );
 
-        given(outboxEventPort.findPendingEvents()).willReturn(List.of(outboxEvent));
+        given(productOutboxEventPort.findPendingEvents()).willReturn(List.of(outboxEvent));
         given(objectMapper.readValue(outboxEvent.getPayload(), OrderCreatedEvent.class)).willReturn(event);
         willThrow(new IllegalStateException("Kafka 발행 실패")).given(publishOrderEventPort).publishOrder(event);
         assertThrows(IllegalStateException.class, () -> outboxPublishService.publishPendingEvents());
 
-        verify(outboxEventPort, never()).markAsSent(anyLong());
+        verify(productOutboxEventPort, never()).markAsSent(anyLong());
     }
 }

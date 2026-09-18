@@ -3,7 +3,7 @@ package com.example.order.order_service.application.service;
 import com.example.order.order_service.application.port.in.CreateOrderUseCase;
 import com.example.order.order_service.application.port.out.LoadOrderPort;
 import com.example.order.order_service.application.port.out.LoadProductPort;
-import com.example.order.order_service.application.port.out.OutboxEventPort;
+import com.example.order.order_service.application.port.out.ProductOutboxEventPort;
 import com.example.order.order_service.application.port.out.SaveOrderPort;
 import com.example.order.order_service.application.port.out.dto.ProductInfo;
 import com.example.order.order_service.domain.model.Order;
@@ -22,7 +22,7 @@ public class CreateOrderService implements CreateOrderUseCase {
     private final SaveOrderPort saveOrderPort;
     private final LoadOrderPort loadOrderPort;
     private final LoadProductPort loadProductPort;
-    private final OutboxEventPort outboxEventPort;
+    private final ProductOutboxEventPort productOutboxEventPort;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -43,7 +43,7 @@ public class CreateOrderService implements CreateOrderUseCase {
 
         OrderCreatedEvent orderCreatedEvent = OrderCreatedEvent.from(savedOrder, eventId);
         String payload = objectMapper.writeValueAsString(orderCreatedEvent);
-        outboxEventPort.save(eventId, "ORDER_CREATED", payload);
+        productOutboxEventPort.save(eventId, "ORDER_CREATED", payload);
         return savedOrder;
     }
 }

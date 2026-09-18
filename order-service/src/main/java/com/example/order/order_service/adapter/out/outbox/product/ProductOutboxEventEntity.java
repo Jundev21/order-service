@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
         }
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderOutboxEventEntity {
+public class ProductOutboxEventEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,7 @@ public class OrderOutboxEventEntity {
     @Enumerated(EnumType.STRING)
     private OutboxStatus status;
 
-    public OrderOutboxEventEntity(String eventId, String eventType, String payload) {
+    public ProductOutboxEventEntity(String eventId, String eventType, String payload) {
         this.eventId = eventId;
         this.eventType = eventType;
         this.payload = payload;

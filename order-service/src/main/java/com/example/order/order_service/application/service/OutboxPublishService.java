@@ -2,9 +2,10 @@ package com.example.order.order_service.application.service;
 
 import com.example.order.order_service.application.port.out.PaymentOutboxEventPort;
 import com.example.order.order_service.application.port.out.PublishOrderEventPort;
-import com.example.order.order_service.application.port.out.OutboxEventPort;
+import com.example.order.order_service.application.port.out.ProductOutboxEventPort;
 import com.example.order.order_service.application.port.out.dto.PendingOutboxEvent;
 import com.example.order.order_service.event.OrderCreatedEvent;
+import com.example.order.order_service.event.PaymentFailedEvent;
 import com.example.order.order_service.event.RequestPaymentEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,17 +18,17 @@ import java.util.function.Consumer;
 @RequiredArgsConstructor
 public class OutboxPublishService {
 
-    private final OutboxEventPort outboxEventPort;
+    private final ProductOutboxEventPort productOutboxEventPort;
     private final PaymentOutboxEventPort paymentOutboxEventPort;
     private final PublishOrderEventPort publishOrderEventPort;
     private final ObjectMapper objectMapper;
 
     public void publishOrderCreatedEvents() {
         publish(
-                outboxEventPort.findPendingEvents(),
+                productOutboxEventPort.findPendingEvents("ORDER_CREATED"),
                 OrderCreatedEvent.class,
                 publishOrderEventPort::publishOrder,
-                outboxEventPort::markAsSent
+                productOutboxEventPort::markAsSent
         );
     }
 
@@ -37,6 +38,15 @@ public class OutboxPublishService {
                 RequestPaymentEvent.class,
                 publishOrderEventPort::publishPaymentOrder,
                 paymentOutboxEventPort::markAsSent
+        );
+    }
+
+    public void publishProductInventoryEvents() {
+        publish(
+                productOutboxEventPort.findPendingEvents("INCREASE_INVENTORY"),
+                PaymentFailedEvent.class,
+                publishOrderEventPort::increaseInventory,
+                productOutboxEventPort::markAsSent
         );
     }
 

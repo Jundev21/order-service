@@ -1,7 +1,7 @@
 package com.example.order.order_service.application.service;
 
 import com.example.order.order_service.application.port.out.LoadOrderPort;
-import com.example.order.order_service.application.port.out.OutboxEventPort;
+import com.example.order.order_service.application.port.out.ProductOutboxEventPort;
 import com.example.order.order_service.application.port.out.SaveOrderPort;
 import com.example.order.order_service.domain.model.Order;
 import com.example.order.order_service.domain.model.OrderStatus;
@@ -31,7 +31,7 @@ class CreateOrderServiceTest {
     private LoadOrderPort loadOrderPort;
 
     @Mock
-    private OutboxEventPort outboxEventPort;
+    private ProductOutboxEventPort productOutboxEventPort;
 
     @Mock
     private ObjectMapper objectMapper;
@@ -66,7 +66,7 @@ class CreateOrderServiceTest {
         );
 
         verify(saveOrderPort, times(1)).save(any(Order.class));
-        verify(outboxEventPort, times(1))
+        verify(productOutboxEventPort, times(1))
                 .save(
                         anyString(),
                         eq("ORDER_CREATED"),
@@ -103,7 +103,7 @@ class CreateOrderServiceTest {
         verify(saveOrderPort, never())
                 .save(any());
 
-        verify(outboxEventPort, never())
+        verify(productOutboxEventPort, never())
                 .save(anyString(), anyString(), anyString());
 
         assertEquals(1L, result.getId());

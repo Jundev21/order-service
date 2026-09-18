@@ -6,6 +6,7 @@ public record RequestPaymentEvent(
         String eventId,
         Long orderId,
         Long goodsId,
+        int quantity,
         Long amount
 ) {
     public static RequestPaymentEvent from(
@@ -15,6 +16,7 @@ public record RequestPaymentEvent(
                 eventId,
                 order.getId(),
                 order.getGoodsId(),
+                order.getQuantity(),
                 amount
         );
     }

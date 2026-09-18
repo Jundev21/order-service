@@ -44,6 +44,7 @@ public class ConsumerProductEventService implements ConsumerProductEventUseCase 
                         eventId,
                         orderInfo.getId(),
                         orderInfo.getGoodsId(),
+                        orderInfo.getQuantity(),
                         orderInfo.getTotalPrice()
                 );
         String payload = objectMapper.writeValueAsString(paymentEvent);

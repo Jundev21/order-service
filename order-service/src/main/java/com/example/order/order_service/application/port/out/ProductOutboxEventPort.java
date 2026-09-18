@@ -4,8 +4,8 @@ import com.example.order.order_service.application.port.out.dto.PendingOutboxEve
 
 import java.util.List;
 
-public interface OutboxEventPort {
+public interface ProductOutboxEventPort {
     void save(String eventId, String eventType, String payload);
-    List<PendingOutboxEvent> findPendingEvents();
+    List<PendingOutboxEvent> findPendingEvents(String eventType);
     void markAsSent(Long id);
 }

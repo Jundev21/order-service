@@ -1,7 +1,7 @@
-package com.example.order.order_service.adapter.out.productService;
+package com.example.order.order_service.adapter.out.client;
 
 
-import com.example.order.order_service.adapter.out.productService.resposne.ProductResponse;
+import com.example.order.order_service.adapter.out.client.resposne.ProductResponse;
 import com.example.order.order_service.application.port.out.LoadProductPort;
 import com.example.order.order_service.application.port.out.dto.ProductInfo;
 import lombok.RequiredArgsConstructor;
